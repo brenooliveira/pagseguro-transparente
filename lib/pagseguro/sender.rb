@@ -34,8 +34,7 @@ module PagSeguro
 
     private
       def discover_hash
-        page = Nokogiri::HTML(open("https://sandbox.pagseguro.uol.com.br/checkout/direct-payment/i-ck.html"))
-        page.css("input#senderTrackingHash")
+        Nokogiri::HTML(open("https://sandbox.pagseguro.uol.com.br/checkout/direct-payment/i-ck.html")).css("input#senderTrackingHash").first.attributes["value"].value
       end
   end
 end
