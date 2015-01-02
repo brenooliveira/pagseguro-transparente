@@ -1,3 +1,6 @@
+require 'nokogiri'
+require 'open-uri'
+
 module PagSeguro
   class Sender
     include ActiveModel::Validations
@@ -26,7 +29,13 @@ module PagSeguro
     def initialize(options = {})
       @email = options[:email]
       @name = options[:name]
-      @hash_id = options[:hash_id]
+      @hash_id = options[:hash_id] || discover_hash
     end
+
+    private
+      def discover_hash
+        page = Nokogiri::HTML(open("https://sandbox.pagseguro.uol.com.br/checkout/direct-payment/i-ck.html"))
+        page.css("input#senderTrackingHash")
+      end
   end
 end
